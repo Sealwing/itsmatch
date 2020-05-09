@@ -25,6 +25,7 @@ class Human(models.Model):
 
     @gender.setter
     def gender(self, value):
+        # Можно заменить валидатором, скорее всего, но в этом пока не разобрался
         self._gender = int(value) if value in (0, 1, 2, '0', '1', '2') else 0
 
     def get_gender_str(self):

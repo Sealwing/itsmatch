@@ -1,3 +1,7 @@
+"""
+TODO description
+"""
+
 from django.utils.datastructures import MultiValueDict
 from django.http.request import QueryDict
 from django.core.paginator import Paginator, InvalidPage
