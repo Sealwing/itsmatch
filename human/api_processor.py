@@ -1,5 +1,5 @@
 """
-TODO description
+API Logic to get more readable views files due to lack of rest-framework in this app
 """
 
 from django.utils.datastructures import MultiValueDict
@@ -17,7 +17,8 @@ HUMANS_CREATE_REQUIRED_FIELDS = {'age', 'gender', 'first_name', 'second_name'}
 
 def humans_get_all(params) -> tuple:
     """
-    TODO docstring
+    Returns tuple of http-code and found human entries in their string presentation and pagination info
+    Pagination info is passed through headers in last position of tuple
     """
     humans = Human.objects.all()
     if len(humans) == 0:
@@ -48,7 +49,8 @@ def humans_get_all(params) -> tuple:
 
 def humans_create(params: QueryDict, files: MultiValueDict) -> tuple:
     """
-    TODO docstring
+    Returns tuple of status code and description of result
+    Tries to create new human entry by given params
     """
     # check params (all have to be present)
     if len(HUMANS_CREATE_REQUIRED_FIELDS - set(params.keys())) != 0:
@@ -67,12 +69,7 @@ def humans_create(params: QueryDict, files: MultiValueDict) -> tuple:
         new_entry.save()
         return (201, {'description': 'Human successfully created.'})
     except Exception as e:
-        print(e)
-        # TODO remove it in production only for debugging
-        if settings.DEBUG:
-            return (500, {'description': f'{e}'})
-        else:
-            return (500, {'description': ''})
+        return (500, {'description': ''})
 
 
 def __detect_avatar_to_provide__(files: MultiValueDict) -> tuple:
@@ -85,6 +82,11 @@ def __detect_avatar_to_provide__(files: MultiValueDict) -> tuple:
 
 
 def humans_get_details(id) -> tuple:
+    """
+    Returns tuple with code and result or descriptive message of failure
+    Select human entry from database by id
+    Avatar is passed as filename
+    """
     try:
         human = Human.objects.get(pk=id)
         result = {
@@ -101,6 +103,12 @@ def humans_get_details(id) -> tuple:
 
 
 def humans_update_details(id, params) -> tuple:
+    """
+    Returns tuple with http-code and description of action result
+    Updates human entry with params provided
+    Change only given params, so if pass only age, then only age is updated
+    id -- human entry pk
+    """
     try:
         human = Human.objects.get(pk=id)
         try:
@@ -117,6 +125,11 @@ def humans_update_details(id, params) -> tuple:
 
 
 def humans_delete_details(id) -> tuple:
+    """
+    Returns tuple with http-status and description of action result
+    Deletes human entry from database, if human with provided id is presented
+    id -- human entry pk
+    """
     try:
         human = Human.objects.get(pk=id)
         human.delete()

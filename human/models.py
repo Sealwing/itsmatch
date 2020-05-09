@@ -34,7 +34,7 @@ class Human(models.Model):
 
     def __str__(self):
         gender_map = {0: 'Human', 1: 'Male', 2: 'Female'}
-        return f'{gender_map[self._gender]} being {self.first_name} {self.second_name} of age {self.age}'
+        return f'{self.pk}: {gender_map[self._gender]} being {self.first_name} {self.second_name} of age {self.age}'
 
     class Meta:
         ordering = ['-pk']

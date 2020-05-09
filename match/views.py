@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+"""
+Using django rest framework
+"""
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
@@ -15,7 +17,8 @@ class MatchView(APIView):
 
     def get(self, request, human_id):
         """
-        TODO docstring
+        Select all matches for provided human id
+        human_id -- human entry pk
         """
         try:
             match = Match.objects.filter(matched_human=human_id)
@@ -26,5 +29,9 @@ class MatchView(APIView):
 
 
 class MatchListView(ListAPIView):
+    """
+    List of matches with short descriptions of humans, they are matched to
+    """
+
     queryset = Match.objects.all().select_related('matched_human')
     serializer_class = MatchListSerializer
